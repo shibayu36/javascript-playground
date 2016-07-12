@@ -93,14 +93,12 @@ function stubUserAgent4(userAgent) {
     };
 }
 
-describe('stubUserAgent', () => {
-    it('can stub userAgent', () => {
-        let defaultUserAgent = navigator.userAgent;
+it('can stub userAgent', () => {
+    let defaultUserAgent = navigator.userAgent;
 
-        let stub = stubUserAgent4('StubbedAgent/1.0');
-        assert.equal(navigator.userAgent, 'StubbedAgent/1.0');
+    let stub = stubUserAgent('StubbedAgent/1.0');
+    assert.equal(navigator.userAgent, 'StubbedAgent/1.0');
 
-        stub.restore();
-        assert.equal(navigator.userAgent, defaultUserAgent);
-    });
+    stub.restore();
+    assert.equal(navigator.userAgent, defaultUserAgent);
 });
