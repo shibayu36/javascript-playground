@@ -2,22 +2,30 @@ const $ = require('jquery');
 const assert = require('assert');
 
 function stubUserAgent(userAgent) {
+    // もともとのPropertyDescriptorを保存しておく
     let origDescriptor = Object.getOwnPropertyDescriptor(
         navigator, 'userAgent'
     );
 
+    // navigatorのuserAgentプロパティを
+    // 渡されたuserAgentが返るように書き換える
     Object.defineProperty(navigator, 'userAgent', {
         get: function () { return userAgent },
         enumerable: true,
         configurable: true,
     });
 
+    // restoreを呼べるようなオブジェクトを返す
     return {
         restore() {
             if (origDescriptor) {
+                // origDescriptorがあるなら、definePropertyで戻す
                 Object.defineProperty(navigator, 'userAgent', origDescriptor);
             }
             else {
+                // origDescriptorがないなら、navigatorのprototypeで
+                // userAgentが定義されているはず。それならば、モックで
+                // 定義したuserAgentプロパティをdeleteすれば戻せる。
                 delete navigator.userAgent;
             }
         },
